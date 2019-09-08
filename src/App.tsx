@@ -2,8 +2,7 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider, styled } from 'baseui';
-import { Button } from 'baseui/button';
-import { StatefulInput } from 'baseui/input';
+import ContactInfo from './Components/ContactInfo';
 
 const engine = new Styletron();
 
@@ -26,8 +25,7 @@ export default function Hello() {
       <BaseProvider theme={LightTheme}>
         <Centered>
           <MainHeader>Awesome Contact List</MainHeader>
-          <StatefulInput />
-          <Button onClick={() => alert('click')}>Hello</Button>
+          <ContactInfo />
         </Centered>
       </BaseProvider>
     </StyletronProvider>
