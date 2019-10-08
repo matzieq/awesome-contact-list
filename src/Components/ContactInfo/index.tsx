@@ -29,7 +29,7 @@ const ContactInfo = () => {
   const [useCss] = useStyletron();
   return (
     <StyledTable>
-      <StyledHead $width="1500px">
+      <StyledHead $width="80vw">
         <StyledHeadCell>Full Name</StyledHeadCell>
         <StyledHeadCell>Email</StyledHeadCell>
         <StyledHeadCell>Phone Number</StyledHeadCell>
@@ -49,8 +49,8 @@ const ContactInfo = () => {
             <StyledCell>{item.dateAdded}</StyledCell>
             <StyledCell>
               <Block>
-                {item.skills.map(skill => (
-                  <Caption1>{skill}</Caption1>
+                {item.skills.map((skill, index) => (
+                  <Caption1 key={index}>{skill}</Caption1>
                 ))}
               </Block>
             </StyledCell>
