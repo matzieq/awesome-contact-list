@@ -11,6 +11,7 @@
     "@types/styletron-react": "^5.0.1",
     "@types/styletron-standard": "^2.0.0",
     "baseui": "^9.7.1",
+    "dayjs": "^1.8.16",
     "formik": "^1.5.8",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

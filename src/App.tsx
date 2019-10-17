@@ -2,7 +2,7 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { LightTheme, BaseProvider, styled } from 'baseui';
-import ContactInfo from './Components/ContactInfo';
+import { StateProvider } from './Components/StateProvider';
 import MainView from './Components/MainView';
 
 const engine = new Styletron();
@@ -25,8 +25,10 @@ export default function Hello() {
     <StyletronProvider value={engine}>
       <BaseProvider theme={LightTheme}>
         <Centered>
-          <MainHeader>Awesome Contact List</MainHeader>
-          <MainView />
+          <StateProvider>
+            <MainHeader>Awesome Contact List</MainHeader>
+            <MainView />
+          </StateProvider>
         </Centered>
       </BaseProvider>
     </StyletronProvider>
