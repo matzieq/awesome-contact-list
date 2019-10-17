@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StyledTable,
   StyledHead,
@@ -9,16 +9,12 @@ import {
   StyledAction,
 } from 'baseui/table';
 import { withStyle, useStyletron } from 'baseui';
-import data from '../MockData/data.json';
-import {
-  Label1,
-  Label2,
-  Caption1,
-  Caption2,
-  Paragraph1,
-  Paragraph2,
-} from 'baseui/typography';
+
+import { Caption1 } from 'baseui/typography';
 import { Block } from 'baseui/block';
+import { Button } from 'baseui/button';
+
+import { Context } from '../StateProvider';
 
 const TableRow = withStyle(StyledRow, {
   margin: '10px 0',
@@ -27,9 +23,11 @@ const TableRow = withStyle(StyledRow, {
 
 const ContactInfo = () => {
   const [useCss] = useStyletron();
+  const { contacts, tags } = useContext(Context);
+
   return (
     <StyledTable>
-      <StyledHead $width="1500px">
+      <StyledHead $width="80vw">
         <StyledHeadCell>Full Name</StyledHeadCell>
         <StyledHeadCell>Email</StyledHeadCell>
         <StyledHeadCell>Phone Number</StyledHeadCell>
@@ -37,9 +35,10 @@ const ContactInfo = () => {
         <StyledHeadCell>Department</StyledHeadCell>
         <StyledHeadCell>Date added</StyledHeadCell>
         <StyledHeadCell>Skills</StyledHeadCell>
+        <StyledHeadCell>Actions</StyledHeadCell>
       </StyledHead>
       <StyledBody>
-        {data.map((item, index) => (
+        {contacts.map((item: any, index: number) => (
           <TableRow key={index}>
             <StyledCell>{item.name}</StyledCell>
             <StyledCell>{item.email}</StyledCell>
@@ -49,10 +48,16 @@ const ContactInfo = () => {
             <StyledCell>{item.dateAdded}</StyledCell>
             <StyledCell>
               <Block>
-                {item.skills.map(skill => (
-                  <Caption1>{skill}</Caption1>
-                ))}
+                {item.skills.map((skill: string, index: number) => {
+                  const currentTag = tags.find((tag: any) => tag.id === skill);
+                  const tagName = currentTag ? currentTag.name : 'Error';
+                  return <Caption1 key={index}>{tagName}</Caption1>;
+                })}
               </Block>
+            </StyledCell>
+            <StyledCell>
+              <Button>Edit</Button>
+              <Button>Delete</Button>
             </StyledCell>
           </TableRow>
         ))}

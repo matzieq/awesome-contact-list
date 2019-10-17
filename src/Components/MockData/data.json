@@ -1,24 +1,22 @@
 [
   {
+    "id": "1",
     "name": "Janusz Klops",
     "email": "j.klops@klops.com",
     "phone": "6666666666",
     "company": "Klops Inc.",
     "department": "HR",
     "dateAdded": "01-01-2019",
-    "skills": ["goofing around", "micromanaging people", "being obnoxious"]
+    "skills": ["1", "2", "3"]
   },
   {
+    "id": "2",
     "name": "Halina Kibel",
     "email": "h.kibel@klops.com",
     "phone": "6666666666",
     "company": "Klops Inc.",
     "department": "Management",
     "dateAdded": "01-01-2019",
-    "skills": [
-      "not knowing what to do",
-      "micromanaging people",
-      "blaming others"
-    ]
+    "skills": ["4", "2", "5"]
   }
 ]
