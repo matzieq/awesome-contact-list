@@ -37,39 +37,46 @@ const ContactInfo = () => {
         <StyledHeadCell>Actions</StyledHeadCell>
       </StyledHead>
       <StyledBody>
-        {contacts.map((item: any, index: number) => (
-          <TableRow key={index}>
-            <StyledCell>{item.name}</StyledCell>
-            <StyledCell>{item.email}</StyledCell>
-            <StyledCell>{item.phone}</StyledCell>
-            <StyledCell>{item.company}</StyledCell>
-            <StyledCell>{item.department}</StyledCell>
-            <StyledCell>{item.dateAdded}</StyledCell>
-            <StyledCell>
-              <Block>
-                {item.skills.map((skill: string, index: number) => {
-                  const currentTag = tags.find((tag: any) => tag.id === skill);
-                  const tagName = currentTag ? currentTag.name : "Error";
-                  return <Caption1 key={index}>{tagName}</Caption1>;
-                })}
-              </Block>
-            </StyledCell>
-            <StyledCell>
-              <Button>Edit</Button>
-              <Button
-                onClick={() => {
-                  const editedContacts = contacts.filter(
-                    (contact: any) => contact.id !== item.id
-                  );
-                  console.log(editedContacts);
-                  setContacts(editedContacts);
-                }}
-              >
-                Delete
-              </Button>
-            </StyledCell>
+        {contacts.length ? (
+          contacts.map((item: any, index: number) => (
+            <TableRow key={index}>
+              <StyledCell>{item.name}</StyledCell>
+              <StyledCell>{item.email}</StyledCell>
+              <StyledCell>{item.phone}</StyledCell>
+              <StyledCell>{item.company}</StyledCell>
+              <StyledCell>{item.department}</StyledCell>
+              <StyledCell>{item.dateAdded}</StyledCell>
+              <StyledCell>
+                <Block>
+                  {item.skills.map((skill: string, index: number) => {
+                    const currentTag = tags.find(
+                      (tag: any) => tag.id === skill
+                    );
+                    const tagName = currentTag ? currentTag.name : "Error";
+                    return <Caption1 key={index}>{tagName}</Caption1>;
+                  })}
+                </Block>
+              </StyledCell>
+              <StyledCell>
+                <Button>Edit</Button>
+                <Button
+                  onClick={() => {
+                    const editedContacts = contacts.filter(
+                      (contact: any) => contact.id !== item.id
+                    );
+                    setContacts(editedContacts);
+                  }}
+                >
+                  Delete
+                </Button>
+              </StyledCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <StyledCell>Nothing to see here, move along</StyledCell>
           </TableRow>
-        ))}
+        )}
       </StyledBody>
     </StyledTable>
   );
