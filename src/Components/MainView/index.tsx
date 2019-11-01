@@ -1,16 +1,15 @@
-import React, { useState, useContext } from 'react';
-import { StatefulButtonGroup, MODE } from 'baseui/button-group';
-import { Button } from 'baseui/button';
-import { Context } from '../StateProvider';
+import React, { useState, useContext } from "react";
+import { StatefulButtonGroup, MODE } from "baseui/button-group";
+import { Button } from "baseui/button";
+import { Context } from "../StateProvider";
 
-
-import ContactInfo from '../ContactInfo';
-import TagInfo from '../TagInfo';
-import FormModal from '../FormModal';
+import ContactInfo from "../ContactInfo";
+import TagInfo from "../TagInfo";
+import FormModal from "../FormModal";
 
 const MainView = () => {
   const [tab, setTab] = useState(0);
-  const {modalOpen, setModalOpen} = useContext(Context);
+  const { modalOpen, setModalOpen, setContacts, setTags } = useContext(Context);
 
   return (
     <>
@@ -19,6 +18,14 @@ const MainView = () => {
         <Button>Tags</Button>
       </StatefulButtonGroup>
       <Button onClick={() => setModalOpen(!modalOpen)}>Add</Button>
+      <Button
+        onClick={() => {
+          setContacts([]);
+          setTags([]);
+        }}
+      >
+        Clear Storage(DEBUG)
+      </Button>
       <div>{tab === 0 ? <ContactInfo /> : <TagInfo />}</div>
       <FormModal formType={tab} />
     </>

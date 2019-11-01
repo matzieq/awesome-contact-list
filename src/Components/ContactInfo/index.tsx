@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import {
   StyledTable,
   StyledHead,
@@ -6,19 +6,18 @@ import {
   StyledBody,
   StyledRow,
   StyledCell,
-  StyledAction,
-} from 'baseui/table';
-import { withStyle, useStyletron } from 'baseui';
+  StyledAction
+} from "baseui/table";
+import { withStyle, useStyletron } from "baseui";
 
-import { Caption1 } from 'baseui/typography';
-import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
+import { Caption1 } from "baseui/typography";
+import { Block } from "baseui/block";
+import { Button } from "baseui/button";
 
-import { Context } from '../StateProvider';
+import { Context } from "../StateProvider";
 
 const TableRow = withStyle(StyledRow, {
-  margin: '10px 0',
-  // border: '1px solid dodgerblue',
+  margin: "10px 0"
 });
 
 const ContactInfo = () => {
@@ -50,7 +49,7 @@ const ContactInfo = () => {
               <Block>
                 {item.skills.map((skill: string, index: number) => {
                   const currentTag = tags.find((tag: any) => tag.id === skill);
-                  const tagName = currentTag ? currentTag.name : 'Error';
+                  const tagName = currentTag ? currentTag.name : "Error";
                   return <Caption1 key={index}>{tagName}</Caption1>;
                 })}
               </Block>
