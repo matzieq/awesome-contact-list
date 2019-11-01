@@ -23,7 +23,7 @@ const TableRow = withStyle(StyledRow, {
 
 const ContactInfo = () => {
   const [useCss] = useStyletron();
-  const { contacts, tags } = useContext(Context);
+  const { contacts, setContacts, tags } = useContext(Context);
 
   return (
     <StyledTable>
@@ -57,7 +57,17 @@ const ContactInfo = () => {
             </StyledCell>
             <StyledCell>
               <Button>Edit</Button>
-              <Button>Delete</Button>
+              <Button
+                onClick={() => {
+                  const editedContacts = contacts.filter(
+                    (contact: any) => contact.id !== item.id
+                  );
+                  console.log(editedContacts);
+                  setContacts(editedContacts);
+                }}
+              >
+                Delete
+              </Button>
             </StyledCell>
           </TableRow>
         ))}
