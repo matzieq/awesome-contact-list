@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from "react";
 import {
   Modal,
   ModalHeader,
@@ -6,13 +6,14 @@ import {
   ModalFooter,
   ModalButton,
   SIZE,
-  ROLE,
-} from 'baseui/modal';
-import dayjs from 'dayjs';
-import { PhoneInput } from 'baseui/phone-input';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { Context } from '../StateProvider';
-import TextInput from './TextInput';
+  ROLE
+} from "baseui/modal";
+import dayjs from "dayjs";
+import { PhoneInput } from "baseui/phone-input";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Context } from "../StateProvider";
+import TextInput from "./TextInput";
+import { localStorageName } from "../../Lib/constants";
 
 const FormModal = (props: any) => {
   const {
@@ -21,11 +22,19 @@ const FormModal = (props: any) => {
     contacts,
     setContacts,
     tags,
-    setTags,
+    setTags
   } = useContext(Context);
   const { formType } = props;
-  const generateId = (items: any) =>
-    (Math.max(...items.map((item: any) => parseInt(item.id))) + 1).toString();
+
+  const generateId = (items: any) => {
+    if (!items.length) {
+      return "1";
+    }
+
+    return (
+      Math.max(...items.map((item: any) => parseInt(item.id))) + 1
+    ).toString();
+  };
 
   return (
     <Modal
@@ -41,24 +50,25 @@ const FormModal = (props: any) => {
         <Formik
           initialValues={
             formType === 0
-              ? { name: '', email: '', phone: '', company: '', department: '' }
-              : { tagName: '' }
+              ? { name: "", email: "", phone: "", company: "", department: "" }
+              : { tagName: "" }
           }
           onSubmit={(values, actions) => {
             if (formType === 1) {
               setTags([
                 ...tags,
-                { id: generateId(tags), name: values.tagName },
+                { id: generateId(tags), name: values.tagName }
               ]);
             } else {
               const dataItem = {
                 ...values,
-                dateAdded: dayjs().format('YYYY-MM-DD'),
+                dateAdded: dayjs().format("YYYY-MM-DD"),
                 id: generateId(contacts),
-                skills: [],
+                skills: []
               };
               setContacts([...contacts, dataItem]);
             }
+
             actions.setSubmitting(false);
             setModalOpen(false);
           }}
