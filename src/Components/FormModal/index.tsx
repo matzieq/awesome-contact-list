@@ -1,19 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from 'react';
 import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   ModalButton,
   SIZE,
-  ROLE
-} from "baseui/modal";
-import dayjs from "dayjs";
-import { PhoneInput } from "baseui/phone-input";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import { Context } from "../StateProvider";
-import TextInput from "./TextInput";
-import { localStorageName } from "../../Lib/constants";
+  ROLE,
+} from 'baseui/modal';
+
+import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
+// import { PhoneInput } from "baseui/phone-input";
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Context } from '../StateProvider';
+import TextInput from './TextInput';
 
 const FormModal = (props: any) => {
   const {
@@ -22,13 +22,23 @@ const FormModal = (props: any) => {
     contacts,
     setContacts,
     tags,
-    setTags
+    setTags,
+    editedItemId,
+    isEditing,
   } = useContext(Context);
-  const { formType } = props;
+  // const { formType } = props;
+
+  let location = useLocation();
+
+  const formType = location.pathname === '/contacts' ? 0 : 1;
+
+  console.log(location);
+
+  console.log(props);
 
   const generateId = (items: any) => {
     if (!items.length) {
-      return "1";
+      return '1';
     }
 
     return (
@@ -36,6 +46,72 @@ const FormModal = (props: any) => {
     ).toString();
   };
 
+  const searchedItems = formType === 0 ? contacts : tags;
+
+  const editedItem = searchedItems.find(
+    (item: any) => item.id === editedItemId
+  );
+
+  let initialValues: any;
+
+  if (formType === 0) {
+    initialValues = isEditing
+      ? {
+          ...editedItem,
+        }
+      : { name: '', email: '', phone: '', company: '', department: '' };
+  } else {
+    initialValues = isEditing ? { tagName: editedItem.name } : { tagName: '' };
+  }
+
+  console.log(editedItem, isEditing, initialValues);
+
+  const submitContact = (values: any) => {
+    const newContact = {
+      ...values,
+      dateAdded: isEditing
+        ? editedItem.dateAdded
+        : dayjs().format('YYYY-MM-DD'),
+      id: isEditing ? editedItemId : generateId(contacts),
+      skills: [],
+    };
+
+    let editedContacts: any;
+
+    if (isEditing) {
+      editedContacts = [...contacts];
+      editedContacts[editedContacts.indexOf(editedItem)] = newContact;
+    } else {
+      editedContacts = [...contacts, newContact];
+    }
+    setContacts(editedContacts);
+  };
+
+  const submitTag = (values: any) => {
+    const newTag = {
+      id: isEditing ? editedItemId : generateId(tags),
+      name: values.tagName,
+    };
+    let editedTags: any;
+    if (isEditing) {
+      editedTags = [...tags];
+      editedTags[editedTags.indexOf(editedItem)] = newTag;
+    } else {
+      editedTags = [...tags, newTag];
+    }
+    setTags(editedTags);
+  };
+
+  const onSubmit = (values: any, actions: any) => {
+    if (formType === 1) {
+      submitTag(values);
+    } else {
+      submitContact(values);
+    }
+
+    actions.setSubmitting(false);
+    setModalOpen(false);
+  };
   return (
     <Modal
       onClose={() => setModalOpen(false)}
@@ -48,30 +124,8 @@ const FormModal = (props: any) => {
       <ModalHeader>Enter data</ModalHeader>
       <ModalBody>
         <Formik
-          initialValues={
-            formType === 0
-              ? { name: "", email: "", phone: "", company: "", department: "" }
-              : { tagName: "" }
-          }
-          onSubmit={(values, actions) => {
-            if (formType === 1) {
-              setTags([
-                ...tags,
-                { id: generateId(tags), name: values.tagName }
-              ]);
-            } else {
-              const dataItem = {
-                ...values,
-                dateAdded: dayjs().format("YYYY-MM-DD"),
-                id: generateId(contacts),
-                skills: []
-              };
-              setContacts([...contacts, dataItem]);
-            }
-
-            actions.setSubmitting(false);
-            setModalOpen(false);
-          }}
+          initialValues={initialValues}
+          onSubmit={onSubmit}
           render={({ isSubmitting }) => (
             <Form>
               {formType === 0 ? (
@@ -118,7 +172,7 @@ const FormModal = (props: any) => {
               )}
 
               <ModalButton disabled={isSubmitting} type="submit">
-                Add
+                {isEditing ? 'Save' : 'Add'}
               </ModalButton>
               <ModalButton
                 disabled={isSubmitting}
