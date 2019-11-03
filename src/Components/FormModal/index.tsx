@@ -15,7 +15,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Context } from '../StateProvider';
 import TextInput from './TextInput';
 
-const FormModal = (props: any) => {
+export default function() {
   const {
     modalOpen,
     setModalOpen,
@@ -26,15 +26,10 @@ const FormModal = (props: any) => {
     editedItemId,
     isEditing,
   } = useContext(Context);
-  // const { formType } = props;
 
   let location = useLocation();
 
   const formType = location.pathname === '/contacts' ? 0 : 1;
-
-  console.log(location);
-
-  console.log(props);
 
   const generateId = (items: any) => {
     if (!items.length) {
@@ -63,8 +58,6 @@ const FormModal = (props: any) => {
   } else {
     initialValues = isEditing ? { tagName: editedItem.name } : { tagName: '' };
   }
-
-  console.log(editedItem, isEditing, initialValues);
 
   const submitContact = (values: any) => {
     const newContact = {
@@ -187,6 +180,4 @@ const FormModal = (props: any) => {
       </ModalBody>
     </Modal>
   );
-};
-
-export default FormModal;
+}

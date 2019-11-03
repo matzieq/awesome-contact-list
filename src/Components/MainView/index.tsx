@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { StatefulButtonGroup, MODE } from 'baseui/button-group';
+import React, { useContext } from 'react';
 import { Button } from 'baseui/button';
 import { Context } from '../StateProvider';
 
@@ -15,7 +14,6 @@ import {
   Route,
   NavLink,
   Redirect,
-  useLocation,
 } from 'react-router-dom';
 
 const Container = styled('div', {
@@ -30,12 +28,16 @@ const AppTitle = styled('h1', {
   fontSize: '30px',
   color: '#fff',
   margin: 0,
-  padding: '50px 100px',
+  padding: '20px 40px',
 });
 
 const StyledNav = styled('nav', {
-  width: '500px',
-  margin: '0 auto',
+  padding: '0 40px',
+});
+
+const ButtonContainer = styled('div', {
+  display: 'flex',
+  justifyContent: 'space-between',
 });
 
 const StyledNavLink = styled(NavLink, {
@@ -44,10 +46,14 @@ const StyledNavLink = styled(NavLink, {
   fontSize: '30px',
   padding: '20px 40px',
   textDecoration: 'none',
+  display: 'inline-block',
 });
 
+const activeNavLinkStyles = {
+  backgroundColor: '#ccc',
+};
+
 const MainView = () => {
-  const [tab, setTab] = useState(0);
   const [useCss] = useStyletron();
   const {
     // modalOpen,
@@ -62,29 +68,33 @@ const MainView = () => {
     <Router>
       <MainHeader>
         <AppTitle>Awesome Contact List</AppTitle>
-        <StyledNav>
-          <StyledNavLink to="/contacts">Contacts</StyledNavLink>
+        <ButtonContainer>
+          <StyledNav>
+            <StyledNavLink
+              activeClassName={useCss(activeNavLinkStyles)}
+              to="/contacts"
+            >
+              Contacts
+            </StyledNavLink>
 
-          <StyledNavLink to="/tags">Tags</StyledNavLink>
-        </StyledNav>
+            <StyledNavLink
+              activeClassName={useCss(activeNavLinkStyles)}
+              to="/tags"
+            >
+              Tags
+            </StyledNavLink>
+          </StyledNav>
+          <Button
+            onClick={() => {
+              setModalOpen(true);
+              setIsEditing(false);
+            }}
+          >
+            +
+          </Button>
+        </ButtonContainer>
       </MainHeader>
       <Container>
-        <Button
-          onClick={() => {
-            setModalOpen(true);
-            setIsEditing(false);
-          }}
-        >
-          Add
-        </Button>
-        <Button
-          onClick={() => {
-            setContacts([]);
-            setTags([]);
-          }}
-        >
-          Clear Storage(DEBUG)
-        </Button>
         <Switch>
           <Route path="/contacts">
             <ContactInfo />
@@ -96,8 +106,16 @@ const MainView = () => {
             <Redirect to="/contacts" />
           </Route>
         </Switch>
-        <FormModal formType={tab} />
+        <FormModal />
       </Container>
+      <Button
+        onClick={() => {
+          setContacts([]);
+          setTags([]);
+        }}
+      >
+        Clear Storage(DEBUG)
+      </Button>
     </Router>
   );
 };
