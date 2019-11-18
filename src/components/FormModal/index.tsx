@@ -14,8 +14,9 @@ import dayjs from "dayjs";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Context } from "../StateProvider";
 import TextInput from "./TextInput";
-import { Button } from "baseui/button";
 import { Select, Value } from "baseui/select";
+import Contact from "../../interfaces/Contact.interface";
+import Tag from "../../interfaces/Tag.interface";
 
 export default function() {
   const {
@@ -35,30 +36,29 @@ export default function() {
   const searchedItems = formType === 0 ? contacts : tags;
 
   const editedItem = searchedItems.find(
-    (item: any) => item.id === editedItemId
+    (item: Contact | Tag) => item.id === editedItemId
   );
 
   const [skills, setSkills] = useState<Value>([]);
 
   useEffect(() => {
     editedItem &&
+      editedItem.skills &&
       setSkills(
-        editedItem.skills.map((skill: any) =>
-          tags.find((tag: any) => tag.id === skill)
+        editedItem.skills.map((skill: string) =>
+          tags.find((tag: Tag) => tag.id === skill)
         )
       );
     console.log(skills);
   }, [editedItemId]);
 
-  const generateId = (items: any) => {
+  function generateId(items: { id: string }[]) {
     if (!items.length) {
       return "1";
     }
 
-    return (
-      Math.max(...items.map((item: any) => parseInt(item.id))) + 1
-    ).toString();
-  };
+    return (Math.max(...items.map(item => parseInt(item.id))) + 1).toString();
+  }
 
   let initialValues: any;
 
@@ -90,7 +90,7 @@ export default function() {
       skills: isEditing ? skills.map(skill => skill.id) : []
     };
 
-    let editedContacts: any;
+    let editedContacts: Contact[];
 
     if (isEditing) {
       editedContacts = [...contacts];
@@ -106,7 +106,7 @@ export default function() {
       id: isEditing ? editedItemId : generateId(tags),
       name: values.tagName
     };
-    let editedTags: any;
+    let editedTags: Tag[];
     if (isEditing) {
       editedTags = [...tags];
       editedTags[editedTags.indexOf(editedItem)] = newTag;

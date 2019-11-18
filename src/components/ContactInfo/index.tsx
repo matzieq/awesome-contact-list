@@ -4,14 +4,10 @@ import {
   StyledHead,
   StyledHeadCell,
   StyledBody,
-  StyledRow,
-  StyledCell,
-  Table
-  // StyledAction,
+  StyledCell
 } from "baseui/table";
-import { withStyle, useStyletron } from "baseui";
 
-import { Caption1, Paragraph1 } from "baseui/typography";
+import { Caption1 } from "baseui/typography";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 
@@ -19,6 +15,8 @@ import { Context } from "../StateProvider";
 
 import TableItem from "./TableItem";
 import { TableRow, TableCell } from "../styledComponents";
+import Contact from "../../interfaces/Contact.interface";
+import Tag from "../../interfaces/Tag.interface";
 
 const ContactInfo = () => {
   // const [useCss] = useStyletron();
@@ -47,13 +45,13 @@ const ContactInfo = () => {
   return (
     <StyledTable>
       <StyledHead $width="100%">
-        {columns.map(column => (
-          <StyledHeadCell>{column}</StyledHeadCell>
+        {columns.map((column, index) => (
+          <StyledHeadCell key={index}>{column}</StyledHeadCell>
         ))}
       </StyledHead>
       <StyledBody>
         {contacts.length ? (
-          contacts.map((item: any, index: number) => (
+          contacts.map((item: Contact, index: number) => (
             <TableRow key={index}>
               <TableItem text={item.name} />
               <TableItem text={item.email} />
@@ -65,7 +63,7 @@ const ContactInfo = () => {
                 <Block>
                   {item.skills.map((skill: string, index: number) => {
                     const currentTag = tags.find(
-                      (tag: any) => tag.id === skill
+                      (tag: Tag) => tag.id === skill
                     );
                     const tagName = currentTag ? currentTag.name : "Error";
                     return <Caption1 key={index}>{tagName}</Caption1>;
@@ -85,7 +83,7 @@ const ContactInfo = () => {
                 <Button
                   onClick={() => {
                     const editedContacts = contacts.filter(
-                      (contact: any) => contact.id !== item.id
+                      (contact: Contact) => contact.id !== item.id
                     );
                     setContacts(editedContacts);
                   }}

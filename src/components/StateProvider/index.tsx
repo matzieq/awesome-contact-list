@@ -1,5 +1,5 @@
-import React, { useState, createContext, useEffect } from 'react';
-import { localStorageName } from '../../lib/constants';
+import React, { useState, createContext, useEffect, ReactNode } from "react";
+import { localStorageName } from "../../lib/constants";
 export const Context = createContext<any>(null);
 
 const { Provider } = Context;
@@ -7,9 +7,13 @@ const { Provider } = Context;
 const getData = () =>
   localStorage.getItem(localStorageName) == null
     ? { contactData: [], tagData: [] }
-    : JSON.parse(localStorage.getItem(localStorageName) || '');
+    : JSON.parse(localStorage.getItem(localStorageName) || "");
 
-export const StateProvider = ({ children }: any) => {
+type StateProviderProps = {
+  children: ReactNode[] | ReactNode;
+};
+
+export const StateProvider = ({ children }: StateProviderProps) => {
   const [contacts, setContacts] = useState(getData().contactData);
   const [tags, setTags] = useState(getData().tagData);
   const [modalOpen, setModalOpen] = useState(false);
@@ -21,7 +25,7 @@ export const StateProvider = ({ children }: any) => {
       localStorageName,
       JSON.stringify({
         contactData: contacts,
-        tagData: tags,
+        tagData: tags
       })
     );
   });
@@ -38,7 +42,7 @@ export const StateProvider = ({ children }: any) => {
         isEditing,
         setIsEditing,
         editedItemId,
-        setEditedItemId,
+        setEditedItemId
       }}
     >
       {children}
