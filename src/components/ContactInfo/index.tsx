@@ -18,18 +18,7 @@ import { Button } from "baseui/button";
 import { Context } from "../StateProvider";
 
 import TableItem from "./TableItem";
-
-const NUMBER_OF_COLUMNS_IN_TABLE = 8;
-
-const TableRow = withStyle(StyledRow, {
-  margin: "10px 0",
-  width: "100%"
-});
-
-const TableCell = withStyle(StyledCell, {
-  width: `${100 / NUMBER_OF_COLUMNS_IN_TABLE}%`,
-  overflow: "hidden"
-});
+import { TableRow, TableCell } from "../styledComponents";
 
 const ContactInfo = () => {
   // const [useCss] = useStyletron();
