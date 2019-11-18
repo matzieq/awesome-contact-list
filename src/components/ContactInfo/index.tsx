@@ -5,23 +5,35 @@ import {
   StyledHeadCell,
   StyledBody,
   StyledRow,
-  StyledCell
+  StyledCell,
+  Table
   // StyledAction,
 } from "baseui/table";
 import { withStyle, useStyletron } from "baseui";
 
-import { Caption1 } from "baseui/typography";
+import { Caption1, Paragraph1 } from "baseui/typography";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 
 import { Context } from "../StateProvider";
 
+import TableItem from "./TableItem";
+
+const NUMBER_OF_COLUMNS_IN_TABLE = 8;
+
 const TableRow = withStyle(StyledRow, {
-  margin: "10px 0"
+  margin: "10px 0",
+  width: "100%"
+});
+
+const TableCell = withStyle(StyledCell, {
+  width: `${100 / NUMBER_OF_COLUMNS_IN_TABLE}%`,
+  overflow: "hidden"
 });
 
 const ContactInfo = () => {
   // const [useCss] = useStyletron();
+
   const {
     contacts,
     setContacts,
@@ -32,29 +44,35 @@ const ContactInfo = () => {
     setEditedItemId
   } = useContext(Context);
 
+  const columns = [
+    "Full Name",
+    "Email",
+    "Phone Number",
+    "Company Name",
+    "Department",
+    "Date added",
+    "Skills",
+    "Actions"
+  ];
+
   return (
     <StyledTable>
-      <StyledHead $width="80vw">
-        <StyledHeadCell>Full Name</StyledHeadCell>
-        <StyledHeadCell>Email</StyledHeadCell>
-        <StyledHeadCell>Phone Number</StyledHeadCell>
-        <StyledHeadCell>Company name</StyledHeadCell>
-        <StyledHeadCell>Department</StyledHeadCell>
-        <StyledHeadCell>Date added</StyledHeadCell>
-        <StyledHeadCell>Skills</StyledHeadCell>
-        <StyledHeadCell>Actions</StyledHeadCell>
+      <StyledHead $width="100%">
+        {columns.map(column => (
+          <StyledHeadCell>{column}</StyledHeadCell>
+        ))}
       </StyledHead>
       <StyledBody>
         {contacts.length ? (
           contacts.map((item: any, index: number) => (
             <TableRow key={index}>
-              <StyledCell>{item.name}</StyledCell>
-              <StyledCell>{item.email}</StyledCell>
-              <StyledCell>{item.phone}</StyledCell>
-              <StyledCell>{item.company}</StyledCell>
-              <StyledCell>{item.department}</StyledCell>
-              <StyledCell>{item.dateAdded}</StyledCell>
-              <StyledCell>
+              <TableItem text={item.name} />
+              <TableItem text={item.email} />
+              <TableItem text={item.phone} />
+              <TableItem text={item.company} />
+              <TableItem text={item.department} />
+              <TableItem text={item.dateAdded} />
+              <TableCell>
                 <Block>
                   {item.skills.map((skill: string, index: number) => {
                     const currentTag = tags.find(
@@ -64,8 +82,8 @@ const ContactInfo = () => {
                     return <Caption1 key={index}>{tagName}</Caption1>;
                   })}
                 </Block>
-              </StyledCell>
-              <StyledCell>
+              </TableCell>
+              <TableCell>
                 <Button
                   onClick={() => {
                     setIsEditing(true);
@@ -85,7 +103,7 @@ const ContactInfo = () => {
                 >
                   Delete
                 </Button>
-              </StyledCell>
+              </TableCell>
             </TableRow>
           ))
         ) : (
